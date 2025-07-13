@@ -1,8 +1,8 @@
 require 'httparty'
 
 class CurrencyConverterService
-  # Using ExchangeRate-API (free tier) instead of Frankfurter
-  BASE_URL = 'https://api.exchangerate-api.com/v4/latest'.freeze
+  # Using Frankfurter API as specified in requirements
+  BASE_URL = 'https://api.frankfurter.app'.freeze
   
   def initialize
     # Nothing needed for initialization
@@ -34,7 +34,7 @@ class CurrencyConverterService
   end
   
   # Gets the exchange rate for a currency pair
-  # Uses cached rate if available, otherwise fetches from ExchangeRate API
+  # Uses cached rate if available, otherwise fetches from Frankfurter API
   def get_rate(source_currency, target_currency)
     # Return 1.0 if source and target currencies are the same
     return 1.0 if source_currency == target_currency
@@ -43,10 +43,10 @@ class CurrencyConverterService
     cached_rate = ExchangeRate.find_current_rate(source_currency, target_currency)
     return cached_rate.rate if cached_rate
     
-    # If not cached or expired, fetch from ExchangeRate API
+    # If not cached or expired, fetch from Frankfurter API
     begin
-      # First fetch the rates for the source currency
-      api_response = HTTParty.get("#{BASE_URL}/#{source_currency}")
+      # Frankfurter requires a different endpoint format: /latest?from=SOURCE&to=TARGET
+      api_response = HTTParty.get("#{BASE_URL}/latest?from=#{source_currency}&to=#{target_currency}")
       
       if api_response.success?
         # Check if the target currency is in the response
@@ -76,11 +76,10 @@ class CurrencyConverterService
     end
   end
   
-  # Returns the list of available currencies from ExchangeRate API
+  # Returns the list of available currencies from Frankfurter API
   def available_currencies
-    # ExchangeRate API free tier supports these currencies
+    # Frankfurter API supports these currencies
     {
-      'USD' => 'US Dollar',
       'AUD' => 'Australian Dollar',
       'BGN' => 'Bulgarian Lev',
       'BRL' => 'Brazilian Real',
@@ -96,6 +95,7 @@ class CurrencyConverterService
       'IDR' => 'Indonesian Rupiah',
       'ILS' => 'Israeli New Sheqel',
       'INR' => 'Indian Rupee',
+      'ISK' => 'Icelandic Króna',
       'JPY' => 'Japanese Yen',
       'KRW' => 'South Korean Won',
       'MXN' => 'Mexican Peso',
@@ -105,11 +105,11 @@ class CurrencyConverterService
       'PHP' => 'Philippine Peso',
       'PLN' => 'Polish Zloty',
       'RON' => 'Romanian Leu',
-      'RUB' => 'Russian Ruble',
       'SEK' => 'Swedish Krona',
       'SGD' => 'Singapore Dollar',
       'THB' => 'Thai Baht',
       'TRY' => 'Turkish Lira',
+      'USD' => 'US Dollar',
       'ZAR' => 'South African Rand'
     }
   end

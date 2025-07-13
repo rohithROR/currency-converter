@@ -88,9 +88,9 @@ RSpec.describe CurrencyConverterService do
     
     context 'when API request fails' do
       before do
-        # Stub a failed API request for an invalid currency
-        stub_request(:get, "#{base_url}/USD")
-          .to_return(status: 404, body: { result: "error", "error-type": "unsupported-code" }.to_json)
+        # Stub a failed API request for an invalid currency with Frankfurter format
+        stub_request(:get, "#{base_url}/latest?from=USD&to=XXX")
+          .to_return(status: 404, body: { error: "not_found", message: "Currency code XXX not supported" }.to_json)
       end
       
       it 'raises an error' do
@@ -152,14 +152,15 @@ RSpec.describe CurrencyConverterService do
     it 'returns a hash of available currencies' do
       currencies = service.available_currencies
       
-      # Test for some of the expected currencies
-      expect(currencies).to include("USD" => "US Dollar")
-      expect(currencies).to include("EUR" => "Euro")
-      expect(currencies).to include("GBP" => "British Pound Sterling")
-      expect(currencies).to include("JPY" => "Japanese Yen")
-      
-      # Check that we have at least 30 currencies (the full list)
-      expect(currencies.size).to be >= 30
+      # Test for some of the expected currencies with Frankfurter format
+      expect(currencies).to include(
+        'EUR' => 'Euro',
+        'GBP' => 'British Pound Sterling',
+        'USD' => 'US Dollar',
+        'JPY' => 'Japanese Yen',
+        'ISK' => 'Icelandic Króna'
+      )
+      expect(currencies.keys.count).to be >= 30
     end
   end
 end

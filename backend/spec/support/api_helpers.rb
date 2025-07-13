@@ -1,15 +1,11 @@
 module ApiHelpers
   def stub_exchange_rate_api(source_currency:, target_currency: nil, rate: nil, status: 200)
-    # Prepare the response body based on the ExchangeRate API format
+    # Prepare the response body based on the Frankfurter API format
+    date = Date.today.to_s
     response_body = {
-      "result": "success",
-      "documentation": "https://www.exchangerate-api.com/docs",
-      "terms_of_use": "https://www.exchangerate-api.com/terms",
-      "time_last_update_unix": Time.now.to_i,
-      "time_last_update_utc": Time.now.utc.strftime('%a, %d %b %Y %H:%M:%S +0000'),
-      "time_next_update_unix": (Time.now + 24.hours).to_i,
-      "time_next_update_utc": (Time.now + 24.hours).utc.strftime('%a, %d %b %Y %H:%M:%S +0000'),
-      "base_code": source_currency,
+      "amount": 1,
+      "base": source_currency,
+      "date": date,
       "rates": {}
     }
     
@@ -37,13 +33,24 @@ module ApiHelpers
       response_body[:rates] = default_rates
     end
     
-    # Stub the API request
-    stub_request(:get, "#{CurrencyConverterService::BASE_URL}/#{source_currency}")
-      .to_return(
-        status: status,
-        body: response_body.to_json,
-        headers: { 'Content-Type' => 'application/json' }
-      )
+    # Stub the API request for Frankfurter format
+    if target_currency && rate
+      # Stub specific currency pair request
+      stub_request(:get, "#{CurrencyConverterService::BASE_URL}/latest?from=#{source_currency}&to=#{target_currency}")
+        .to_return(
+          status: status,
+          body: response_body.to_json,
+          headers: { 'Content-Type' => 'application/json' }
+        )
+    else
+      # Stub general request for all rates
+      stub_request(:get, "#{CurrencyConverterService::BASE_URL}/latest?from=#{source_currency}")
+        .to_return(
+          status: status,
+          body: response_body.to_json,
+          headers: { 'Content-Type' => 'application/json' }
+        )
+    end
   end
 end
 
