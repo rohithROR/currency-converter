@@ -89,7 +89,7 @@ function App() {
       </header>
       
       <div className="row">
-        <div className="col-lg-4 mb-4 mb-lg-0">
+        <div>
           <div className="card currency-card">
             <div className="card-header converter-header text-center">
               <i className="fas fa-exchange-alt me-2"></i> Convert Currency
@@ -99,8 +99,10 @@ function App() {
             </div>
           </div>
         </div>
-        
-        <div className="col-lg-8">
+      </div>
+
+      <br/> <br />
+      <div className="row">
           <div className="card currency-card">
             <div className="card-header history-header text-center">
               <i className="fas fa-history me-2"></i> Conversion History
@@ -110,7 +112,6 @@ function App() {
               <ConversionHistory conversions={conversions} loading={loading} error={error} />
             </div>
           </div>
-        </div>
       </div>
       
       <footer className="mt-5 text-center text-muted">
