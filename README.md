@@ -1,18 +1,5 @@
 # CurrencyXchange Pro | Global Currency Conversion
 
-## Application Screenshots
-
-### Currency Conversion Interface
-![Currency Conversion Interface](/images/screenshot_1.png)
-
-### Conversion Result Display
-![Conversion Result Display](/images/screenshot_2.png)
-
-### Different Currency Pairs (AUD to USD)
-![Different Currency Pairs](/images/screenshot_3.png)
-
-### Currency Conversion (GBP to USD)
-![Currency Conversion GBP to USD](/images/screenshot_4.png)
 
 A full-stack currency conversion application built with Ruby on Rails backend and React frontend. This application enables users to convert between multiple currencies using live exchange rates from the Frankfurter API, with smart rate caching to minimize external API calls and provide a seamless user experience.
 
