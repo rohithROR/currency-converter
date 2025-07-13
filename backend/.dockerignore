@@ -1,0 +1,42 @@
+# Git
+.git
+.gitignore
+
+# Logs
+log/*
+*.log
+
+# Temp files
+tmp/*
+!tmp/.keep
+
+# Database
+db/*.sqlite3
+db/*.sqlite3-journal
+
+# Test files
+spec/tmp
+coverage/
+.rspec
+
+# System files
+.DS_Store
+.idea
+.vscode
+*.swp
+*~
+
+# Environment
+.env*
+!.env.example
+
+# Documentation
+README.md
+LICENSE
+
+# Gems and cache
+vendor/bundle
+
+# Docker related
+Dockerfile
+docker-compose.yml

@@ -1,0 +1,52 @@
+source 'https://rubygems.org'
+git_source(:github) { |repo| "https://github.com/#{repo}.git" }
+
+ruby '3.0.6'
+
+# Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
+gem 'rails', '~> 7.0.8'
+
+# These gems are now part of Ruby 3.0 standard library, but we keep them with looser constraints
+gem 'net-smtp', '~> 0.3.0'
+gem 'net-imap', '~> 0.2.2'
+gem 'net-pop', '~> 0.1.1'
+
+# No need to pin ffi for Ruby 3.0
+gem 'ffi', '~> 1.15.5' # Required for Rails 6.0 on Ruby 2.7
+
+# Use sqlite3 as the database for Active Record
+gem 'sqlite3', '~> 1.6.0' # Updated for Rails 7.0
+# Use Puma as the app server
+gem 'puma', '~> 5.6.5'
+# Build JSON APIs with ease
+gem 'jbuilder', '~> 2.11.5' # Compatible with Rails 7.0
+# HTTP client for Frankfurter API
+gem 'httparty', '~> 0.20.0'
+# Reduces boot times through caching; required in config/boot.rb
+gem 'bootsnap', '~> 1.16.0', require: false # Updated for Rails 7.0 and Ruby 3.0 compatibility
+
+# Use Rack CORS for handling Cross-Origin Resource Sharing (CORS)
+gem 'rack-cors', '~> 2.0.1' # Updated for Rails 7.0
+
+group :development, :test do
+  # Call 'byebug' anywhere in the code to stop execution and get a debugger console
+  gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
+  
+  # Testing framework
+  gem 'rspec-rails', '~> 5.0.0' # Updated for Ruby 3.0 compatibility
+  gem 'factory_bot_rails', '~> 6.2.0' # Updated for Ruby 3.0 compatibility
+  gem 'faker', '~> 2.20.0' # Updated for Ruby 3.0 compatibility
+  gem 'webmock', '~> 3.14.0'
+  # Remove database_cleaner as we're manually cleaning in the rails_helper
+end
+
+group :development do
+  # Spring speeds up development by keeping your application running in the background
+  # Spring has been removed from Rails 7.0 defaults
+  gem 'spring', '~> 4.1.0' # Updated for Rails 7.0
+  gem 'listen', '~> 3.8' # Updated for Rails 7.0
+end
+
+
+# Windows does not include zoneinfo files, so bundle the tzinfo-data gem
+gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]

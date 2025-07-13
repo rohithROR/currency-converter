@@ -1,0 +1,53 @@
+version: '3.8'
+
+services:
+  backend:
+    build: ./backend
+    container_name: currency_converter_backend
+    ports:
+      - "3000:3000"
+    environment:
+      - RAILS_ENV=development
+      - RACK_ENV=development
+      - CORS_ORIGINS=http://localhost:3001,http://frontend:3001
+    volumes:
+      - ./backend:/rails
+      - backend_bundle:/usr/local/bundle
+    restart: unless-stopped
+    networks:
+      currency_converter_network:
+        aliases:
+          - backend
+
+  frontend:
+    build: ./frontend
+    container_name: currency_converter_frontend
+    ports:
+      - "3001:3001"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    depends_on:
+      - backend
+    environment:
+      - REACT_APP_API_URL=http://backend:3000/api/v1
+      - REACT_APP_API_URL_FALLBACK_1=http://localhost:3000/api/v1
+      - REACT_APP_API_URL_FALLBACK_2=/api/v1
+      - PORT=3001
+      - CHOKIDAR_USEPOLLING=true
+      - WDS_SOCKET_PORT=0
+      - NODE_ENV=development
+      - ESLINT_NO_DEV_ERRORS=true
+      - BROWSER=none
+    restart: unless-stopped
+    networks:
+      currency_converter_network:
+        aliases:
+          - frontend
+
+volumes:
+  backend_bundle:
+
+networks:
+  currency_converter_network:
+    driver: bridge
